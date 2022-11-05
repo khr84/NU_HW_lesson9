@@ -24,7 +24,6 @@ class Game:
             gamer.add_name(f'player #{i + 1}')
             self.player_list.append(gamer)
 
-
     def do_move(self):
         number = self.bag_game.get_number()
         print(f'\nВыпало число: {number}')
