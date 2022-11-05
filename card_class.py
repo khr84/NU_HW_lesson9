@@ -55,7 +55,6 @@ class Card:
             if (i+1) % self.column == 0:
                 print(f'{print_str}')
         print('*' * (self.column * 3 - 1))
-        print(self.data)
 
     def check_number(self, number):
         return True if number in self.data else False

@@ -8,6 +8,10 @@ class Game:
     def __init__(self, count_comp, count_player):
         self.bag_game = bag.Bag()
 
+        self.win_player = []
+        self.win_comp = []
+        self.lose_player = []
+
         self.comp_list = []
         for i in range(count_comp):
             comp =  pl.Player()
@@ -36,14 +40,19 @@ class Game:
             player.player_move(number, play_question)
 
     def check_end_game(self):
-        win_comp = [comp.name for comp in self.comp_list if comp.win == 1]
-        win_player = [player.name for player in self.player_list if player.win == 1]
-        lose_player = [player.name for player in self.player_list if player.win == 0]
-        if len(win_comp) > 0 or len(win_player) > 0 or len(lose_player) > 0:
+        self.win_comp = [comp.name for comp in self.comp_list if comp.win == 1]
+        self.win_player = [player.name for player in self.player_list if player.win == 1]
+        self.lose_player = [player.name for player in self.player_list if player.win == 0]
+        if len(self.win_comp) > 0 or len(self.win_player) > 0 or len(self.lose_player) > 0:
             self.end_game = True
-            print('Конец игры!')
-        if len(win_comp) > 0 or len(win_player) > 0:
-            win_comp.extend(win_player)
-            print(f'В игре попедил(и): {win_comp}')
-        if len(lose_player) > 0:
-            print(f'В игре проиграли: {lose_player}')
+
+    def print_game(self):
+        print('Конец игры!')
+        win_list = []
+        if len(self.win_comp) > 0 or len(self.win_player) > 0:
+            win_list.extend(self.win_comp)
+            win_list.extend(self.win_player)
+            print(f'В игре попедил(и): {win_list}')
+        if len(self.lose_player) > 0:
+            print(f'В игре проиграл(и): {self.lose_player}')
+        print(f'Невыпавшие номера: {self.bag_game.list_bag}')
