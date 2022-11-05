@@ -16,6 +16,11 @@ class Player:
             str_input = input('Надо зачеркнуть выпавшее число: y/n ')
         return True if str_input.lower() == 'y' else False
 
+    def comp_move(self, number):
+        if self.card.check_number(number):
+            self.card.remove_number(number)
+            if self.card.check_win():
+                self.win = 1
     def player_move(self, number, play_question):
         if play_question and not self.card.check_number(number):
             self.win = 0

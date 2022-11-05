@@ -28,10 +28,7 @@ class Game:
         # ход компа/игрока
         for comp in self.comp_list:
             comp.card.print_card(comp.name)
-            if comp.card.check_number(number):
-                comp.card.remove_number(number)
-                if comp.card.check_win():
-                    comp.win = 1
+            comp.comp_move(number)
         for player in self.player_list:
             print()
             player.card.print_card(player.name)
