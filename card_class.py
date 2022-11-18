@@ -30,6 +30,23 @@ class Card:
         for i in range(self.row):
                 self.data.extend(list(matrix_number[i,  : ]))
 
+    def __str__(self):
+        return str(self.data)
+
+    def __eq__(self, other):
+        if isinstance(other, Card):
+            return self.data == other.data
+        elif isinstance(other, list):
+            return self.data == other
+        else:
+            return false
+
+    def __len__(self):
+        return len([number for number in self.data if number not in [0, '--']])
+
+    def __contains__(self, item):
+        return True if item in self.data else False
+
     def set_data_for_test(self, list_number):
         self.data = list_number
 
@@ -55,9 +72,6 @@ class Card:
             if (i+1) % self.column == 0:
                 print(f'{print_str}')
         print('*' * (self.column * 3 - 1))
-
-    def check_number(self, number):
-        return True if number in self.data else False
 
     def remove_number(self, number):
         for i in range(len(self.data)):
