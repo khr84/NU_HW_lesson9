@@ -12,6 +12,12 @@ class TestBag(unittest.TestCase):
         self.assertEqual(self.bag.list_bag[-1], 90)
         self.assertEqual(self.bag.list_bag[0], 1)
 
+    def test_bag_eq(self):
+        self.bag_new = Bag()
+        self.assertEqual(self.bag, self.bag_new)
+        self.assertNotEqual(self.bag, [1, 2, 3, 4])
+        self.assertNotEqual(self.bag, 4)
+
     def test_bag_get_number(self):
         number = self.bag.get_number()
         self.assertIn(number, self.bag.list_bag)
@@ -33,12 +39,29 @@ class TestCard(unittest.TestCase):
         for i in range(self.card.column):
             for element in [self.card.data[i], self.card.data[i+9], self.card.data[i+18]]:
                 self.assertTrue(element in [k for k in range(i*10+1, (i+1)*10)] or element == 0)
+    def test_card_eq(self):
+        self.card_new = Card()
+        self.assertNotEqual(self.card, self.card_new)
+        self.assertNotEqual(self.card, [1, 2, 3, 4])
+        self.card = self.card_new
+        self.assertEqual(self.card, self.card_new)
 
-    def test_card_check_number(self):
-        self.assertTrue(self.card.check_number(55) if 55 in self.card.data else not self.card.check_number(55))
+    def test_card_len(self):
+        self.assertEqual(len(self.card), 15)
+        n = 0
+        for number in self.card.data:
+            if number not in [0, '--']:
+                n += 1
+                self.card.remove_number(number)
+                if n == 5:
+                    self.assertEqual(len(self.card), 10)
+        self.assertEqual(len(self.card), 0)
+
+    def test_card_in(self):
+        self.assertTrue(True if 55 in self.card else not False)
         self.card.set_data_for_test([0, 15, 29, 39, 0, 0, 0, 72, 86, 6, 0, 23, 0, 45, 0, 0, 76, 84, 0, 0, 21, 32, 0, 59, 68, 0, 85])
-        self.assertTrue(self.card.check_number(45))
-        self.assertFalse(self.card.check_number(55))
+        self.assertTrue(45 in self.card)
+        self.assertFalse(55 in self.card)
 
     def test_card_remove_number(self):
         for i in range(11, 20):
@@ -60,10 +83,17 @@ class TestCard(unittest.TestCase):
 class TestPlayer(unittest.TestCase):
 
     def setUp(self):
-        self.player = Player()
+        self.player = Player('Player#1')
     def test_pl_init(self):
         self.assertEqual(self.player.win, -1)
+        self.assertEqual(self.player.name, 'Player#1')
         self.assertIsInstance(self.player.card, Card)
+
+    def test_pl_eq(self):
+        self.assertEqual(self.player, self.player.card)
+        self.comp = Player('comp#1')
+        self.assertNotEqual(self.player, self.comp)
+        self.assertNotEqual(self.player, [1, 2, 3])
 
     def test_pl_comp_move(self):
         self.player.card.set_data_for_test(['--', 0, 0, 37, 44, 51, 0, 78, 0, 0, 0, '--', 0, 0, '--', 69, 75, '--', 0, '--', 0, 0, 47, 0, '--', '--', 81])
@@ -96,6 +126,13 @@ class TestGame(unittest.TestCase):
 
     def setUp(self):
         self.game = Game(2, 3)
+
+    def test_game_eq(self):
+        self.game_new = Game(1, 1)
+        self.assertNotEqual(self.game, self.game_new)
+        self.game_other = Game(2, 3)
+        self.assertEqual(self.game, self.game_other)
+
     def test_game_init(self):
         comp_name_list = []
         for comp in self.game.comp_list:
